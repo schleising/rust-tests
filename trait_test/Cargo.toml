@@ -6,7 +6,4 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-
-[lib]
-name = "shape_lib"
-path = "../shape_lib/lib.rs"
+shape_lib = { path = "../shape_lib" }
