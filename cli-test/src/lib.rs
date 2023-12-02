@@ -107,7 +107,12 @@ pub mod user_input {
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
             // Check if the error is std::num::ParseIntError
-            assert_eq!(number.unwrap_err().downcast_ref::<std::num::ParseIntError>().is_some(), true);
+            let error = number.unwrap_err();
+            let downcast_error = error.downcast_ref::<std::num::ParseIntError>().unwrap();
+            assert_eq!(error.downcast_ref::<std::num::ParseIntError>().is_some(), true);
+            // Check is the kind of the error is std::num::IntErrorKind::PosOverflow
+            let error_kind = downcast_error.kind();
+            assert_eq!(*error_kind, std::num::IntErrorKind::PosOverflow);
         }
 
         // Test that a non-number will return an error
@@ -123,7 +128,12 @@ pub mod user_input {
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
             // Check if the error is std::num::ParseIntError
-            assert_eq!(number.unwrap_err().downcast_ref::<std::num::ParseIntError>().is_some(), true);
+            let error = number.unwrap_err();
+            assert_eq!(error.downcast_ref::<std::num::ParseIntError>().is_some(), true);
+            // Check is the kind of the error is std::num::IntErrorKind::InvalidDigit
+            let downcast_error = error.downcast_ref::<std::num::ParseIntError>().unwrap();
+            let error_kind = downcast_error.kind();
+            assert_eq!(*error_kind, std::num::IntErrorKind::InvalidDigit);
         }
 
         // Test that a non-UTF8 character will return an error
@@ -139,7 +149,12 @@ pub mod user_input {
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
             // Check if the error is a std::io::Error
-            assert_eq!(number.unwrap_err().downcast_ref::<std::io::Error>().is_some(), true);
+            let error = number.unwrap_err();
+            assert_eq!(error.downcast_ref::<std::io::Error>().is_some(), true);
+            // Check if the error is a std::io::ErrorKind::InvalidData
+            let downcast_error = error.downcast_ref::<std::io::Error>().unwrap();
+            let error_kind = downcast_error.kind();
+            assert_eq!(error_kind, std::io::ErrorKind::InvalidData);
         }
 
         // Test that an empty string will return an error
@@ -155,7 +170,12 @@ pub mod user_input {
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
             // Check if the error is std::num::ParseIntError
-            assert_eq!(number.unwrap_err().downcast_ref::<std::num::ParseIntError>().is_some(), true);
+            let error = number.unwrap_err();
+            assert_eq!(error.downcast_ref::<std::num::ParseIntError>().is_some(), true);
+            // Check is the kind of the error is std::num::IntErrorKind::Empty
+            let downcast_error = error.downcast_ref::<std::num::ParseIntError>().unwrap();
+            let error_kind = downcast_error.kind();
+            assert_eq!(*error_kind, std::num::IntErrorKind::Empty);
         }
 
         #[test]
