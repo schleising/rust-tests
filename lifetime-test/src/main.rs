@@ -7,12 +7,14 @@ fn return_largest<'a>(x: &'a i32, y: &'a i32) -> &'a i32 {
 }
 
 fn main() {
-    let x = 5;
+    let x = 15;
+    println!("The value of x is     {}", x);
     let z: &i32;
     {
         let y = 6;
+        println!("The value of y is     {}", y);
         z = return_largest(&x, &y);
-        println!("{}", z);
+        println!("The largest number is {}", z);
     }
-
+    
 }
