@@ -67,7 +67,7 @@ async fn create_tasks() -> Result<(), reqwest::Error> {
     );
 
     // Create 10 tasks
-    let tasks = (0..1000).map(|i| long_process(i, client.clone()));
+    let tasks = (0..10).map(|i| long_process(i, client.clone()));
 
     // Wait for all the tasks to complete
     future::join_all(tasks).await;
