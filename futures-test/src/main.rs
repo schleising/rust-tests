@@ -7,7 +7,7 @@ async fn long_process(proc_number: u32, client: Arc<reqwest::Client>) -> Result<
     println!("Process: {} Started", proc_number);
 
     // Get data from a url
-    let url: &str = "https://google.com";
+    let url: &str = "https://www.schleising.net/football/api/";
 
     // Make a request
     let response: Result<reqwest::Response, reqwest::Error> = client.get(url).header(CONNECTION, "keep-alive").send().await;
@@ -62,12 +62,12 @@ async fn create_tasks() -> Result<(), reqwest::Error> {
             .tcp_keepalive(duration_option)
             .pool_max_idle_per_host(0)
             .default_headers(headers)
-            .http2_prior_knowledge()
+            // .http2_prior_knowledge()
             .build()?
     );
 
-    // Create 10 tasks
-    let tasks = (0..10).map(|i| long_process(i, client.clone()));
+    // Create 100 tasks
+    let tasks = (0..100).map(|i| long_process(i, client.clone()));
 
     // Wait for all the tasks to complete
     future::join_all(tasks).await;
