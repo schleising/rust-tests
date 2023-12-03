@@ -3,22 +3,55 @@ pub mod user_input {
     use std::error::Error;
     use std::fmt;
 
-    #[derive(Debug)]
+    use colored::Colorize;
+
+    // Create a custom error type for the cli module that implements the Error trait
+    #[derive(Debug, PartialEq)]
     pub enum CliError {
+        NumberOverflow,
+        EmptyInput,
+        InvalidDigit,
+        InvalidUtf8,
         UserQuit,
-    }
-    
-    impl fmt::Display for CliError {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            match self {
-                CliError::UserQuit => write!(f, "User quit, exiting..."),
-            }
-        }
     }
     
     impl Error for CliError {}
     
-    fn get_number_from_user_wrapped<R: BufRead, W: Write> (input: &mut R, output: &mut W) -> Result<i32, Box<dyn Error>> {
+    impl fmt::Display for CliError {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            match self {
+                CliError::NumberOverflow => write!(f, "{}", "Error: Number overflow, please enter a different number".red()),
+                CliError::EmptyInput => write!(f, "{}", "Error: Empty input, please enter a number".red()),
+                CliError::InvalidDigit => write!(f, "{}", "Error: Invalid digit, please enter a number".red()),
+                CliError::InvalidUtf8 => write!(f, "{}", "Error: Invalid UTF-8, please enter a number".red()),
+                CliError::UserQuit => write!(f, "{}", "Error: User quit, exiting...".green()),
+            }
+        }
+    }
+
+    impl From<std::num::ParseIntError> for CliError {
+        fn from(error: std::num::ParseIntError) -> Self {
+            match error.kind() {
+                std::num::IntErrorKind::PosOverflow => CliError::NumberOverflow,
+                std::num::IntErrorKind::NegOverflow => CliError::NumberOverflow,
+                std::num::IntErrorKind::Empty => CliError::EmptyInput,
+                std::num::IntErrorKind::InvalidDigit => CliError::InvalidDigit,
+                _ => CliError::InvalidDigit,
+                
+            }
+        }
+    }
+
+    impl From<std::io::Error> for CliError {
+        fn from(error: std::io::Error) -> Self {
+            match error.kind() {
+                std::io::ErrorKind::InvalidData => CliError::InvalidUtf8,
+                _ => CliError::InvalidDigit,
+            }
+        }
+    }
+
+    fn get_number_from_user_wrapped<R: BufRead, W: Write> (input: &mut R, output: &mut W) -> Result<i32, CliError> {
         // Print a prompt
         print!("Enter a number or (q) to quit: ");
 
@@ -35,7 +68,7 @@ pub mod user_input {
         // Check if the input is 'q' to quit
         if trimmed_input == "q" {
             // If the input was 'q', print a message and break the loop
-            return Err(Box::new(CliError::UserQuit));
+            return Err(CliError::UserQuit);
         }
         
         // Parse the number
@@ -45,19 +78,10 @@ pub mod user_input {
         Ok(parsed_number)
     }
 
-    pub fn get_number_from_user () -> Result<i32, Box<dyn Error>> {
+    pub fn get_number_from_user () -> Result<i32, CliError> {
         let mut input: std::io::StdinLock<'_> = stdin().lock();
         let mut output: std::io::Stdout = stdout();
         get_number_from_user_wrapped(&mut input, &mut output)
-    }
-
-    pub fn error_should_exit (input_err: Box<dyn Error>) -> bool {
-        // Check if the error is a CliError::UserQuit and print the error
-        if let Some(_) = input_err.downcast_ref::<CliError>() {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     // Test the cli module
@@ -68,11 +92,11 @@ pub mod user_input {
         #[test]
         fn test_get_number_from_user () {
             // Test the get_number_from_user function simulating the user entering 1
-            let mut input = "1\n".as_bytes();
-            let mut output = Vec::new();
+            let mut input: &[u8] = "1\n".as_bytes();
+            let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, Box<dyn Error>> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the number is 1
             assert_eq!(number.unwrap(), 1);
@@ -86,12 +110,12 @@ pub mod user_input {
             let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, Box<dyn Error>> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
             // Check if the error is CliError::UserQuit
-            assert_eq!(number.unwrap_err().downcast_ref::<CliError>().is_some(), true);
+            assert_eq!(number.unwrap_err(), CliError::UserQuit);
         }
 
         // Test that a number that is too large will return an error
@@ -102,17 +126,12 @@ pub mod user_input {
             let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, Box<dyn Error>> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
             // Check if the error is std::num::ParseIntError
-            let error = number.unwrap_err();
-            let downcast_error = error.downcast_ref::<std::num::ParseIntError>().unwrap();
-            assert_eq!(error.downcast_ref::<std::num::ParseIntError>().is_some(), true);
-            // Check is the kind of the error is std::num::IntErrorKind::PosOverflow
-            let error_kind = downcast_error.kind();
-            assert_eq!(*error_kind, std::num::IntErrorKind::PosOverflow);
+            assert_eq!(number.unwrap_err(), CliError::NumberOverflow);
         }
 
         // Test that a non-number will return an error
@@ -123,17 +142,12 @@ pub mod user_input {
             let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, Box<dyn Error>> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
             // Check if the error is std::num::ParseIntError
-            let error = number.unwrap_err();
-            assert_eq!(error.downcast_ref::<std::num::ParseIntError>().is_some(), true);
-            // Check is the kind of the error is std::num::IntErrorKind::InvalidDigit
-            let downcast_error = error.downcast_ref::<std::num::ParseIntError>().unwrap();
-            let error_kind = downcast_error.kind();
-            assert_eq!(*error_kind, std::num::IntErrorKind::InvalidDigit);
+            assert_eq!(number.unwrap_err(), CliError::InvalidDigit);
         }
 
         // Test that a non-UTF8 character will return an error
@@ -144,17 +158,12 @@ pub mod user_input {
             let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, Box<dyn Error>> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
             // Check if the error is a std::io::Error
-            let error = number.unwrap_err();
-            assert_eq!(error.downcast_ref::<std::io::Error>().is_some(), true);
-            // Check if the error is a std::io::ErrorKind::InvalidData
-            let downcast_error = error.downcast_ref::<std::io::Error>().unwrap();
-            let error_kind = downcast_error.kind();
-            assert_eq!(error_kind, std::io::ErrorKind::InvalidData);
+            assert_eq!(number.unwrap_err(), CliError::InvalidUtf8);
         }
 
         // Test that an empty string will return an error
@@ -165,30 +174,12 @@ pub mod user_input {
             let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, Box<dyn Error>> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
             // Check if the error is std::num::ParseIntError
-            let error = number.unwrap_err();
-            assert_eq!(error.downcast_ref::<std::num::ParseIntError>().is_some(), true);
-            // Check is the kind of the error is std::num::IntErrorKind::Empty
-            let downcast_error = error.downcast_ref::<std::num::ParseIntError>().unwrap();
-            let error_kind = downcast_error.kind();
-            assert_eq!(*error_kind, std::num::IntErrorKind::Empty);
-        }
-
-        #[test]
-        fn test_error_should_exit () {
-            // Test the error_should_exit function
-            assert_eq!(error_should_exit(Box::new(CliError::UserQuit)), true);
-        }
-
-        #[test]
-        fn test_error_should_not_exit () {
-            use std::io::{Error, ErrorKind};
-            // Test the error_should_exit function
-            assert_eq!(error_should_exit(Box::new(Error::new(ErrorKind::Other, "Test error"))), false);
+            assert_eq!(number.unwrap_err(), CliError::EmptyInput);
         }
     }
 }
