@@ -8,7 +8,7 @@ fn main() {
     // Loop forever
     loop {
         // Get a number from the user
-        let input_number: i32 = match get_number_from_user() {
+        let input_number: u8 = match get_number_from_user() {
             Ok(number) => number,
             Err(input_err) => {
                 match input_err {

@@ -51,9 +51,9 @@ pub mod user_input {
         }
     }
 
-    fn get_number_from_user_wrapped<R: BufRead, W: Write> (input: &mut R, output: &mut W) -> Result<i32, CliError> {
-        // Print a prompt
-        print!("Enter a number or (q) to quit: ");
+    fn get_number_from_user_wrapped<R: BufRead, W: Write> (input: &mut R, output: &mut W) -> Result<u8, CliError> {
+        // Print a prompt to output
+        write!(output, "Please enter a number: ")?;
 
         // Flush the output to the screen
         output.flush()?;
@@ -72,13 +72,13 @@ pub mod user_input {
         }
         
         // Parse the number
-        let parsed_number: i32 = trimmed_input.parse::<i32>()?;
+        let parsed_number: u8 = trimmed_input.parse::<u8>()?;
         
         // Return the number
         Ok(parsed_number)
     }
 
-    pub fn get_number_from_user () -> Result<i32, CliError> {
+    pub fn get_number_from_user () -> Result<u8, CliError> {
         let mut input: std::io::StdinLock<'_> = stdin().lock();
         let mut output: std::io::Stdout = stdout();
         get_number_from_user_wrapped(&mut input, &mut output)
@@ -91,15 +91,22 @@ pub mod user_input {
     
         #[test]
         fn test_get_number_from_user () {
-            // Test the get_number_from_user function simulating the user entering 1
-            let mut input: &[u8] = "1\n".as_bytes();
-            let mut output: Vec<u8> = Vec::new();
-    
-            // Get the number from the user
-            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
-    
-            // Check if the number is 1
-            assert_eq!(number.unwrap(), 1);
+            // Test all possible u8 values
+            for i in u8::MIN..u8::MAX {
+                // Create a string from the number
+                let current_number: String = format!("{}\n", i);
+
+                // Test the get_number_from_user function simulating the user entering a number
+                let mut input: &[u8] = current_number.as_bytes();
+                let mut output: Vec<u8> = Vec::new();
+        
+                // Get the number from the user
+                let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
+        
+                // Check if the number is correct
+                assert_eq!(number.is_ok(), true);
+                assert_eq!(number.unwrap(), i);
+            }
         }
 
         // Test all the error cases for the get_number_from_user function
@@ -110,7 +117,7 @@ pub mod user_input {
             let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
@@ -122,11 +129,11 @@ pub mod user_input {
         #[test]
         fn test_get_number_from_user_number_too_large () {
             // Test the get_number_from_user function simulating the user entering a number that is too large
-            let mut input: &[u8] = "2147483648\n".as_bytes();
+            let mut input: &[u8] = "256\n".as_bytes();
             let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
@@ -142,7 +149,7 @@ pub mod user_input {
             let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
@@ -158,7 +165,7 @@ pub mod user_input {
             let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
@@ -174,7 +181,7 @@ pub mod user_input {
             let mut output: Vec<u8> = Vec::new();
     
             // Get the number from the user
-            let number: Result<i32, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
+            let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
             assert_eq!(number.is_err(), true);
