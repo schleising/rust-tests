@@ -1,12 +1,14 @@
 use std::fmt::Display;
 
 trait Exclaim where Self: Display {
+    fn exclaim (&self) -> String;
+}
+
+impl<T: Display> Exclaim for T {
     fn exclaim (&self) -> String {
         format!("{}!", self)
     }
 }
-
-impl<T: Display> Exclaim for T {}
 
 fn main() {
     println!("{}", "&str".exclaim());
