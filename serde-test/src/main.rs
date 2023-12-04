@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Person {
     pub name: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "JsonAge", skip_serializing_if = "Option::is_none")]
     pub age: Option<i64>,
     pub phones: Phones,
 }
