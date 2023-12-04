@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_json;
 
 // I used https://typegen.vestera.as/ to generate the following code from the JSON below.
 // {
