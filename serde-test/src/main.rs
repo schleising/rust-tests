@@ -11,8 +11,9 @@ use serde::{Deserialize, Serialize};
 // }
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Person {
-    pub name: String,
-    pub age: i64,
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub age: Option<i64>,
     pub phones: Phones,
 }
 
@@ -34,42 +35,47 @@ fn main() {
     };
 
     let person: Person = Person {
-        name: "John Doe".to_string(),
-        age: 43,
+        name: Some("John Doe".to_string()),
+        age: Some(43),
+        phones: phones.clone(),
+    };
+
+    let person_no_age = Person {
+        name: None,
+        age: None,
         phones,
     };
 
-    let with_option: WithOption<Person> = WithOption {
-        value: Some(person),
-    };
-
-    let with_option_none: WithOption<Person> = WithOption { value: None };
-
-    let serialized = match serde_json::to_string(&with_option) {
+    // Serialise Person to JSON
+    let serialised = match serde_json::to_string(&person) {
         Ok(s) => s,
-        Err(e) => panic!("Error serializing: {}", e),
+        Err(e) => panic!("Error serialising: {}", e),
     };
 
-    println!("serialized = {}", serialized);
+    println!("Serialised: {}", serialised);
 
-    let deserialized: WithOption<Person> = match serde_json::from_str(&serialized) {
+    // Deserialise JSON to Person
+    let deserialised: Person = match serde_json::from_str(&serialised) {
+        Ok(p) => p,
+        Err(e) => panic!("Error deserialising: {}", e),
+    };
+
+    println!("Deserialised: {:?}", deserialised);
+
+    // Serialise Person with no age to JSON
+    let serialised_no_age = match serde_json::to_string(&person_no_age) {
         Ok(s) => s,
-        Err(e) => panic!("Error deserializing: {}", e),
+        Err(e) => panic!("Error serialising: {}", e),
     };
 
-    println!("deserialized = {:?}", deserialized);
+    println!("Serialised No Age: {}", serialised_no_age);
 
-    let serialized = match serde_json::to_string(&with_option_none) {
-        Ok(s) => s,
-        Err(e) => panic!("Error serializing: {}", e),
+    // Deserialise JSON to Person with no age
+    let deserialised_no_age: Person = match serde_json::from_str(&serialised_no_age) {
+        Ok(p) => p,
+        Err(e) => panic!("Error deserialising: {}", e),
     };
 
-    println!("serialized = {}", serialized);
+    println!("Deserialised No Age: {:?}", deserialised_no_age);
 
-    let deserialized: WithOption<Person> = match serde_json::from_str(&serialized) {
-        Ok(s) => s,
-        Err(e) => panic!("Error deserializing: {}", e),
-    };
-
-    println!("deserialized = {:?}", deserialized);
 }
