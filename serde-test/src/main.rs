@@ -22,33 +22,54 @@ pub struct Phones {
     pub mobile: String,
 }
 
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+struct WithOption<T> {
+    value: Option<T>,
+}
+
 fn main() {
-    let phones = Phones {
+    let phones: Phones = Phones {
         home: "1234567".to_string(),
         mobile: "2345678".to_string(),
     };
 
-    let person = Person {
+    let person: Person = Person {
         name: "John Doe".to_string(),
         age: 43,
         phones,
     };
 
-    // Convert the Person to a JSON string.
-    let serialized: String = match serde_json::to_string(&person) {
-        Ok(json) => json,
+    let with_option: WithOption<Person> = WithOption {
+        value: Some(person),
+    };
+
+    let with_option_none: WithOption<Person> = WithOption { value: None };
+
+    let serialized = match serde_json::to_string(&with_option) {
+        Ok(s) => s,
         Err(e) => panic!("Error serializing: {}", e),
     };
 
-    // Print, write to a file, or send to an HTTP server.
-    println!("{}", serialized);
+    println!("serialized = {}", serialized);
 
-    // Convert the JSON string back to a Person.
-    let deserialized: Person = match serde_json::from_str(&serialized) {
-        Ok(person) => person,
+    let deserialized: WithOption<Person> = match serde_json::from_str(&serialized) {
+        Ok(s) => s,
         Err(e) => panic!("Error deserializing: {}", e),
     };
 
-    // Print, write to a file, or send to an HTTP server.
-    println!("{:?}", deserialized);
+    println!("deserialized = {:?}", deserialized);
+
+    let serialized = match serde_json::to_string(&with_option_none) {
+        Ok(s) => s,
+        Err(e) => panic!("Error serializing: {}", e),
+    };
+
+    println!("serialized = {}", serialized);
+
+    let deserialized: WithOption<Person> = match serde_json::from_str(&serialized) {
+        Ok(s) => s,
+        Err(e) => panic!("Error deserializing: {}", e),
+    };
+
+    println!("deserialized = {:?}", deserialized);
 }
