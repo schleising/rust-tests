@@ -195,7 +195,7 @@ fn main() -> std::io::Result<()> {
     // Set the command arguments
     command.arg("-i");
     command.arg(&input_file);
-    command.args(["-y", "-c:v", "libx264", "-c:a", "copy"]);
+    command.args(["-y", "-c:v", "libx264", "-crf", "23", "-c:a", "copy"]);
     command.arg(&output_file);
     command.stdout(Stdio::piped());
     command.stderr(Stdio::piped());
