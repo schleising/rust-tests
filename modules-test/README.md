@@ -14,7 +14,7 @@
         └── exclaim.rs
 ```
 
-To use a module inside a folder, you need to create a file with the same name as the folder and add `mod <file_name>` to it. For example, to use the `maths` module inside the `library` folder, you need to create a file called `library.rs` and add `mod maths` to it.
+To use a module inside a folder, you need to create a file with the same name as the folder and add `mod <file_name>` to it. For example, to use the `maths` module inside the `library` folder, you need to create a file called `library.rs` and add `pub mod maths` to it.
 
 ### library.rs file
 
