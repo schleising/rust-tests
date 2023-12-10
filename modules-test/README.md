@@ -24,7 +24,7 @@ pub mod maths; // Bring in the maths module
 pub mod exclaim; // Bring in the exclaim module
 ```
 
-### maths.rs file
+### library/maths.rs file
 
 ```rust
 // maths.rs
@@ -33,7 +33,7 @@ pub fn add(a: i32, b: i32) -> i32 {
 }
 ```
 
-### exclaim.rs file
+### library/exclaim.rs file
 
 ```rust
 // exclaim.rs
