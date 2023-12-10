@@ -7,16 +7,16 @@
 ├── Cargo.toml
 ├── README.md
 └── src
-    ├── main.rs
     ├── library.rs
-    └── library
-        ├── maths.rs
-        └── exclaim.rs
+    ├── library
+    │   ├── maths.rs
+    │   └── exclaim.rs
+    └── main.rs
 ```
 
 To use a module inside a folder, you need to create a file with the same name as the folder and add `pub mod <file_name>` to it. For example, to use the `maths` module inside the `library` folder, you need to create a file called `library.rs` and add `pub mod maths` to it.
 
-### library.rs file
+### library.rs
 
 ```rust
 // library.rs
@@ -24,7 +24,7 @@ pub mod maths; // Bring in the maths module
 pub mod exclaim; // Bring in the exclaim module
 ```
 
-### library/maths.rs file
+### library/maths.rs
 
 ```rust
 // maths.rs
@@ -33,7 +33,7 @@ pub fn add(a: i32, b: i32) -> i32 {
 }
 ```
 
-### library/exclaim.rs file
+### library/exclaim.rs
 
 ```rust
 // exclaim.rs
@@ -49,7 +49,7 @@ impl<T: std::fmt::Display> Exclaim for T {
 }
 ```
 
-### main.rs file
+### main.rs
 
 ```rust
 // main.rs
