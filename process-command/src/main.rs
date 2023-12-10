@@ -98,6 +98,17 @@ impl std::fmt::Display for FfmpegOutput {
     }
 }
 
+// Create an enum to label the different parts of the output
+enum FfmpegOutputPart {
+    Frame = 1,
+    Fps,
+    Quality,
+    Size,
+    Time,
+    Bitrate,
+    Speed,
+}
+
 // Parse a string into an FfmpegOutput
 fn parse_string(string: &str) -> Result<(), FfmpegError> {
     // Check if the string starts with "frame="
@@ -114,37 +125,37 @@ fn parse_string(string: &str) -> Result<(), FfmpegError> {
             let mut output = FfmpegOutput::new();
 
             // Get the current frame
-            output.current_frame = captures.get(1)
+            output.current_frame = captures.get(FfmpegOutputPart::Frame as usize)
                 .and_then(|m| m.as_str().parse::<u32>().ok())
                 .ok_or(FfmpegError::ParseError("Could not get current frame".to_string()))?;
 
             // Get the current fps
-            output.current_fps = captures.get(2)
+            output.current_fps = captures.get(FfmpegOutputPart::Fps as usize)
                 .and_then(|m| m.as_str().parse::<f32>().ok())
                 .ok_or(FfmpegError::ParseError("Could not get current fps".to_string()))?;
 
             // Get the quality
-            output.quality = captures.get(3)
+            output.quality = captures.get(FfmpegOutputPart::Quality as usize)
                 .and_then(|m| m.as_str().parse::<f32>().ok())
                 .ok_or(FfmpegError::ParseError("Could not get quality".to_string()))?;
 
             // Get the size
-            output.size = captures.get(4)
+            output.size = captures.get(FfmpegOutputPart::Size as usize)
                 .and_then(|m| m.as_str().parse::<i32>().ok())
                 .ok_or(FfmpegError::ParseError("Could not get size".to_string()))?;
 
             // Get the time
-            output.time = captures.get(5)
+            output.time = captures.get(FfmpegOutputPart::Time as usize)
                 .and_then(|m| NaiveTime::parse_from_str(m.as_str(), "%H:%M:%S%.f").ok())
                 .ok_or(FfmpegError::ParseError("Could not get time".to_string()))?;
 
             // Get the bitrate
-            output.bitrate = captures.get(6)
+            output.bitrate = captures.get(FfmpegOutputPart::Bitrate as usize)
                 .and_then(|m| m.as_str().parse::<f32>().ok())
                 .ok_or(FfmpegError::ParseError("Could not get bitrate".to_string()))?;
 
             // Get the speed
-            output.speed = captures.get(7)
+            output.speed = captures.get(FfmpegOutputPart::Speed as usize)
                 .and_then(|m| m.as_str().parse::<f32>().ok())
                 .ok_or(FfmpegError::ParseError("Could not get speed".to_string()))?;
 
