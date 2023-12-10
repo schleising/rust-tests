@@ -98,6 +98,7 @@ impl std::fmt::Display for FfmpegOutput {
     }
 }
 
+// Parse a string into an FfmpegOutput
 fn parse_string(string: &str) -> Result<(), FfmpegError> {
     // Check if the string starts with "frame="
     if string.starts_with("frame=") {
@@ -113,82 +114,39 @@ fn parse_string(string: &str) -> Result<(), FfmpegError> {
             let mut output = FfmpegOutput::new();
 
             // Get the current frame
-            if let Some(current_frame) = captures.get(1) {
-                // Convert the current frame to a string
-                let current_frame = current_frame.as_str();
-
-                output.current_frame = current_frame.parse::<u32>()?;
-            } else {
-                // Return an error
-                return Err(FfmpegError::ParseError("Could not get current frame".to_string()));
-            }
+            output.current_frame = captures.get(1)
+                .and_then(|m| m.as_str().parse::<u32>().ok())
+                .ok_or(FfmpegError::ParseError("Could not get current frame".to_string()))?;
 
             // Get the current fps
-            if let Some(current_fps) = captures.get(2) {
-                // Convert the current fps to a string
-                let current_fps = current_fps.as_str();
-
-                output.current_fps = current_fps.parse::<f32>()?;
-            } else {
-                // Return an error
-                return Err(FfmpegError::ParseError("Could not get current fps".to_string()));
-            }
+            output.current_fps = captures.get(2)
+                .and_then(|m| m.as_str().parse::<f32>().ok())
+                .ok_or(FfmpegError::ParseError("Could not get current fps".to_string()))?;
 
             // Get the quality
-            if let Some(quality) = captures.get(3) {
-                // Convert the quality to a string
-                let quality = quality.as_str();
-
-                output.quality = quality.parse::<f32>()?;
-            } else {
-                // Return an error
-                return Err(FfmpegError::ParseError("Could not get quality".to_string()));
-            }
+            output.quality = captures.get(3)
+                .and_then(|m| m.as_str().parse::<f32>().ok())
+                .ok_or(FfmpegError::ParseError("Could not get quality".to_string()))?;
 
             // Get the size
-            if let Some(size) = captures.get(4) {
-                // Convert the size to a string
-                let size = size.as_str();
-
-                output.size = size.parse::<i32>()?;
-            } else {
-                // Return an error
-                return Err(FfmpegError::ParseError("Could not get size".to_string()));
-            }
+            output.size = captures.get(4)
+                .and_then(|m| m.as_str().parse::<i32>().ok())
+                .ok_or(FfmpegError::ParseError("Could not get size".to_string()))?;
 
             // Get the time
-            if let Some(time) = captures.get(5) {
-                // Convert the time to a string
-                let time = time.as_str();
-
-                // Convert the time to a Duration
-                output.time = NaiveTime::parse_from_str(time, "%H:%M:%S%.f")?;
-            } else {
-                // Return an error
-                return Err(FfmpegError::ParseError("Could not get time".to_string()));
-            }
+            output.time = captures.get(5)
+                .and_then(|m| NaiveTime::parse_from_str(m.as_str(), "%H:%M:%S%.f").ok())
+                .ok_or(FfmpegError::ParseError("Could not get time".to_string()))?;
 
             // Get the bitrate
-            if let Some(bitrate) = captures.get(6) {
-                // Convert the bitrate to a string
-                let bitrate = bitrate.as_str();
-
-                output.bitrate = bitrate.parse::<f32>()?;
-            } else {
-                // Return an error
-                return Err(FfmpegError::ParseError("Could not get bitrate".to_string()));
-            }
+            output.bitrate = captures.get(6)
+                .and_then(|m| m.as_str().parse::<f32>().ok())
+                .ok_or(FfmpegError::ParseError("Could not get bitrate".to_string()))?;
 
             // Get the speed
-            if let Some(speed) = captures.get(7) {
-                // Convert the speed to a string
-                let speed = speed.as_str();
-
-                output.speed = speed.parse::<f32>()?;
-            } else {
-                // Return an error
-                return Err(FfmpegError::ParseError("Could not get speed".to_string()));
-            }
+            output.speed = captures.get(7)
+                .and_then(|m| m.as_str().parse::<f32>().ok())
+                .ok_or(FfmpegError::ParseError("Could not get speed".to_string()))?;
 
             // Print the output
             println!("{}", output);
