@@ -25,11 +25,14 @@ struct StateMachine<StateT: State = State1> {
 }
 
 // Implement the state machine struct for any state type that implements the State trait
-impl <StateT: State> StateMachine<StateT> {
+impl<StateT: State> StateMachine<StateT> {
     // Define a common method that can be called in any state
-    fn common_method(&self) {
-        // Print the current state of the state machine
-        println!("Common method called on StateMachine in State: {}", std::any::type_name::<StateT>());
+    fn common_method(&self) -> String {
+        // Return the current state of the state machine as a string
+        format!(
+            "Common method called in State: {}",
+            std::any::type_name::<StateT>()
+        )
     }
 }
 
@@ -77,11 +80,11 @@ impl StateMachine<State4> {
         StateMachine {
             state: std::marker::PhantomData::<State1>,
         }
-    }    
+    }
 }
 
 // Implement the Display trait for the StateMachine struct
-impl <StateT: State> std::fmt::Display for StateMachine<StateT> {
+impl<StateT: State> std::fmt::Display for StateMachine<StateT> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "State: {:?}", std::any::type_name::<StateT>())
     }
@@ -91,22 +94,101 @@ fn main() {
     // Create a new state machine with the initial state State1
     let state_machine = StateMachine::new();
     println!("StateMachine in State: {}", state_machine);
-    state_machine.common_method();
+    println!("{}", state_machine.common_method());
 
     // Transition to State2, State3, State4, and back to State1
     let state_machine = state_machine.transition_to_state2();
     println!("StateMachine in State: {}", state_machine);
-    state_machine.common_method();
+    println!("{}", state_machine.common_method());
 
     let state_machine = state_machine.transition_to_state3();
     println!("StateMachine in State: {}", state_machine);
-    state_machine.common_method();
+    println!("{}", state_machine.common_method());
 
     let state_machine = state_machine.transition_to_state4();
     println!("StateMachine in State: {}", state_machine);
-    state_machine.common_method();
+    println!("{}", state_machine.common_method());
 
     let state_machine = state_machine.transition_to_state1();
     println!("StateMachine in State: {}", state_machine);
-    state_machine.common_method();
+    println!("{}", state_machine.common_method());
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_state_machine() {
+        // Create a new state machine with the initial state State1
+        let state_machine = StateMachine::new();
+        assert_eq!(
+            format!("{}", state_machine),
+            "State: \"state_machine_test::State1\""
+        );
+
+        // Transition to State2, State3, State4, and back to State1
+        let state_machine = state_machine.transition_to_state2();
+        assert_eq!(
+            format!("{}", state_machine),
+            "State: \"state_machine_test::State2\""
+        );
+
+        let state_machine = state_machine.transition_to_state3();
+        assert_eq!(
+            format!("{}", state_machine),
+            "State: \"state_machine_test::State3\""
+        );
+
+        let state_machine = state_machine.transition_to_state4();
+        assert_eq!(
+            format!("{}", state_machine),
+            "State: \"state_machine_test::State4\""
+        );
+
+        let state_machine = state_machine.transition_to_state1();
+        assert_eq!(
+            format!("{}", state_machine),
+            "State: \"state_machine_test::State1\""
+        );
+    }
+
+    // Test the common method
+    #[test]
+    fn test_common_method() {
+        // Create a new state machine with the initial state State1
+        let state_machine = StateMachine::new();
+        assert_eq!(
+            state_machine.common_method(),
+            "Common method called in State: state_machine_test::State1"
+        );
+
+        // Transition to State2
+        let state_machine = state_machine.transition_to_state2();
+        assert_eq!(
+            state_machine.common_method(),
+            "Common method called in State: state_machine_test::State2"
+        );
+
+        // Transition to State3
+        let state_machine = state_machine.transition_to_state3();
+        assert_eq!(
+            state_machine.common_method(),
+            "Common method called in State: state_machine_test::State3"
+        );
+
+        // Transition to State4
+        let state_machine = state_machine.transition_to_state4();
+        assert_eq!(
+            state_machine.common_method(),
+            "Common method called in State: state_machine_test::State4"
+        );
+
+        // Transition back to State1
+        let state_machine = state_machine.transition_to_state1();
+        assert_eq!(
+            state_machine.common_method(),
+            "Common method called in State: state_machine_test::State1"
+        );
+    }
 }
