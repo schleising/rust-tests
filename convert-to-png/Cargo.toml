@@ -4,5 +4,5 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow = "1.0.93"
-image = { version = "0.25.5", features = ["webp"] }
+anyhow = "1.0.98"
+image = { version = "0.25.6", features = ["webp"] }
