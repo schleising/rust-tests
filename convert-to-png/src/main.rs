@@ -1,14 +1,11 @@
 use std::{fs, path::PathBuf};
 
-use anyhow;
-use image;
-
 const EXTENSIONS_TO_CONVERT: [&str; 3] = ["jpg", "jpeg", "webp"];
 
 fn convert_image_to_png(image_path: &PathBuf) -> anyhow::Result<()> {
     let output_path = image_path.with_extension("png");
 
-    let img = image::open(&image_path)?;
+    let img = image::open(image_path)?;
 
     img.save(output_path)?;
 

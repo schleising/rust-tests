@@ -47,7 +47,7 @@ fn main() {
     let person = Person::new(String::from("David"));
     println!("String::From: {}", person.name);
 
-    let person = Person::new(format!("{}", "Eve"));
+    let person = Person::new("Eve".to_string());
     println!("Format: {}", person.name);
 
     let job_role = JobRole::new("Frank", "Manager");

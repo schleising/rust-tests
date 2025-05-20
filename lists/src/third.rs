@@ -19,7 +19,7 @@ impl<T> List<T> {
     pub fn prepend(&self, elem: T) -> List<T> {
         List { 
             head: Some(Rc::new(Node {
-            elem: elem,
+            elem,
             next: self.head.clone(),
         }))}
     }
@@ -34,6 +34,12 @@ impl<T> List<T> {
 
     pub fn iter(&self) -> Iter<'_, T> {
         Iter { next: self.head.as_deref() }
+    }
+}
+
+impl<T> Default for List<T> {
+    fn default() -> Self {
+        List::new()
     }
 }
 

@@ -21,7 +21,7 @@ impl<T> List<T> {
         unsafe {
             // Immediately convert the Box into a raw pointer
             let new_tail = Box::into_raw(Box::new(Node {
-                elem: elem,
+                elem,
                 next: ptr::null_mut(),
             }));
     
@@ -54,9 +54,15 @@ impl<T> List<T> {
     }
 }
 
+impl<T> Default for List<T> {
+    fn default() -> Self {
+        List::new()
+    }
+}
+
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
-        while let Some(_) = self.pop() { }
+        while self.pop().is_some() { }
     }
 }
 

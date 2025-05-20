@@ -23,16 +23,16 @@ fn main() {
 
     // println!("The value of z is     {}", z); // error[E0597]: `y` does not live long enough
 
-    let mut foo: Foo = Foo { x: &x };
-    println!("The value of foo.x is {}", foo.x);
+    let mut foo_struct: Foo = Foo { x: &x };
+    println!("The value of foo_struct.x is {}", foo_struct.x);
 
     {
         let y = 5;
-        foo.x = &y;
+        foo_struct.x = &y;
 
-        println!("The value of foo.x is {}", foo.x);
+        println!("The value of foo_struct.x is {}", foo_struct.x);
     }
 
-    // println!("The value of foo.x is {}", foo.x); // error[E0597]: `y` does not live long enough
+    // println!("The value of foo_struct.x is {}", foo_struct.x); // error[E0597]: `y` does not live long enough
 
 }

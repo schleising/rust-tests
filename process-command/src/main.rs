@@ -258,7 +258,7 @@ fn main() -> std::io::Result<()> {
                 }
             } else {
                 println!("Could not get stdout");
-                return Err(std::io::Error::new(std::io::ErrorKind::Other, "Could not get stdout"));
+                return Err(std::io::Error::other("Could not get stdout"));
             }
 
             // Wait for the process to finish
@@ -269,7 +269,7 @@ fn main() -> std::io::Result<()> {
         Err(e) => {
             let error = FfmpegError::SpawnError(e);
             println!("Error: {}", error);
-            return Err(std::io::Error::new(std::io::ErrorKind::Other, error));
+            return Err(std::io::Error::other(error));
         }
     }
 

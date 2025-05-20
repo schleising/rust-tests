@@ -20,6 +20,8 @@ fn main() -> Result<()> {
     // This is a simple loop, but you may want to use more complex logic here,
     // for example to handle I/O.
     loop {
+        // Wait for events
+        std::thread::sleep(std::time::Duration::from_millis(100));
     }
 
     // Ok(())

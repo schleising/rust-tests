@@ -17,7 +17,7 @@ struct Node<T> {
 impl<T> Node<T> {
     fn new(elem: T) -> Rc<RefCell<Self>> {
         Rc::new(RefCell::new(Node {
-            elem: elem,
+            elem,
             prev: None,
             next: None,
         }))
@@ -113,9 +113,16 @@ impl<T> List<T> {
         })
     }
 
+    #[allow(clippy::should_implement_trait)]
     pub fn into_iter(self) -> IntoIter<T> {
         IntoIter(self)
     }
+}
+
+impl <T> Default for List<T> {
+    fn default() -> Self {
+        List::new()
+    }    
 }
 
 impl<T> Drop for List<T> {

@@ -18,7 +18,7 @@ impl<T> List<T> {
 
     pub fn push(&mut self, elem: T) {
         let new_node = Box::new(Node {
-            elem: elem,
+            elem,
             next: self.head.take(),
         });
     
@@ -44,6 +44,7 @@ impl<T> List<T> {
         })
     }
 
+    #[allow(clippy::should_implement_trait)]
     pub fn into_iter(self) -> IntoIter<T> {
         IntoIter(self)
     }
@@ -54,6 +55,12 @@ impl<T> List<T> {
 
     pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         IterMut { next: self.head.as_deref_mut() }
+    }
+}
+
+impl Default for List<i32> {
+    fn default() -> Self {
+        List::new()
     }
 }
 
@@ -172,9 +179,9 @@ mod test {
         assert_eq!(list.peek(), None);
         assert_eq!(list.peek_mut(), None);
 
-        list.peek_mut().map(|value| {
-            *value = 42
-        });
+        if let Some(value) = list.peek_mut() {
+            *value = 42;
+        }
 
         assert_eq!(list.peek_mut(), None);
 
@@ -183,9 +190,9 @@ mod test {
         assert_eq!(list.peek(), Some(&3));
         assert_eq!(list.peek_mut(), Some(&mut 3));
 
-        list.peek_mut().map(|value| {
+        if let Some(value) = list.peek_mut() {
             *value = 42
-        });
+        }
 
         assert_eq!(list.peek(), Some(&42));
         assert_eq!(list.pop(), Some(42));

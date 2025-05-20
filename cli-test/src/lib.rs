@@ -104,7 +104,7 @@ pub mod user_input {
                 let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
         
                 // Check if the number is correct
-                assert_eq!(number.is_ok(), true);
+                assert!(number.is_ok());
                 assert_eq!(number.unwrap(), i);
             }
         }
@@ -120,7 +120,7 @@ pub mod user_input {
             let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
-            assert_eq!(number.is_err(), true);
+            assert!(number.is_err());
             // Check if the error is CliError::UserQuit
             assert_eq!(number.unwrap_err(), CliError::UserQuit);
         }
@@ -136,7 +136,7 @@ pub mod user_input {
             let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
-            assert_eq!(number.is_err(), true);
+            assert!(number.is_err());
             // Check if the error is std::num::ParseIntError
             assert_eq!(number.unwrap_err(), CliError::NumberOverflow);
         }
@@ -152,7 +152,7 @@ pub mod user_input {
             let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
-            assert_eq!(number.is_err(), true);
+            assert!(number.is_err());
             // Check if the error is std::num::ParseIntError
             assert_eq!(number.unwrap_err(), CliError::InvalidDigit);
         }
@@ -168,7 +168,7 @@ pub mod user_input {
             let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
-            assert_eq!(number.is_err(), true);
+            assert!(number.is_err());
             // Check if the error is a std::io::Error
             assert_eq!(number.unwrap_err(), CliError::InvalidUtf8);
         }
@@ -184,7 +184,7 @@ pub mod user_input {
             let number: Result<u8, CliError> = get_number_from_user_wrapped(&mut input, &mut output);
     
             // Check if the error is CliError::UserQuit
-            assert_eq!(number.is_err(), true);
+            assert!(number.is_err());
             // Check if the error is std::num::ParseIntError
             assert_eq!(number.unwrap_err(), CliError::EmptyInput);
         }

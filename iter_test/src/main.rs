@@ -1,40 +1,40 @@
 // Filter the even numbers from a slice of numbers
-fn filter_even_numbers(numbers: &Vec<i32>) -> Vec<i32> {
+fn filter_even_numbers(numbers: &[i32]) -> Vec<i32> {
     // Create an iterator over the slice
     let iter: std::slice::Iter<'_, i32> = numbers.iter();
 
     // Filter the iterator to only include even numbers
-    let even_numbers: Vec<i32> = iter.filter(|&&x| x % 2 == 0).map(|x| *x).collect();
+    let even_numbers: Vec<i32> = iter.filter(|&&x| x % 2 == 0).copied().collect();
 
     // Return the even numbers
     even_numbers
 }
 
 // Filter the odd numbers from a slice of numbers
-fn filter_odd_numbers(numbers: &Vec<i32>) -> Vec<i32> {
+fn filter_odd_numbers(numbers: &[i32]) -> Vec<i32> {
     // Create an iterator over the slice
     let iter = numbers.iter();
 
     // Filter the iterator to only include odd numbers
-    let odd_numbers: Vec<i32> = iter.filter(|&x| x % 2 != 0).map(|&x| x).collect();
+    let odd_numbers: Vec<i32> = iter.filter(|&x| x % 2 != 0).copied().collect();
 
     // Return the odd numbers
     odd_numbers
 }
 
 // Skip the first n numbers from a slice of numbers
-fn skip_numbers(numbers: &Vec<i32>, n: usize) -> Vec<i32> {
+fn skip_numbers(numbers: &[i32], n: usize) -> Vec<i32> {
     // Create an iterator over the slice
     let iter = numbers.iter();
 
     // Skip the first n numbers
-    let skip_numbers: Vec<i32> = iter.skip(n).map(|&x| x).collect();
+    let skip_numbers: Vec<i32> = iter.skip(n).copied().collect();
 
     // Return the skipped numbers
     skip_numbers
 }
 
-fn inspect_numbers(numbers: &Vec<i32>) -> Vec<i32> {
+fn inspect_numbers(numbers: &[i32]) -> Vec<i32> {
     // Create an iterator over the slice
     let iter = numbers.iter();
 
