@@ -1,15 +1,15 @@
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 
+use signal_hook::flag::register;
+
 fn main() {
     println!("Starting signal-hook test...");
 
     // Create a new Signals instance
     let term = Arc::new(AtomicBool::new(false));
-    signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&term))
-        .expect("Failed to register SIGTERM");
-    signal_hook::flag::register(signal_hook::consts::SIGINT, Arc::clone(&term))
-        .expect("Failed to register SIGINT");
+    register(signal_hook::consts::SIGTERM, Arc::clone(&term)).expect("Failed to register SIGTERM");
+    register(signal_hook::consts::SIGINT, Arc::clone(&term)).expect("Failed to register SIGINT");
 
     let handle = std::thread::spawn(move || {
         println!("Thread started");
