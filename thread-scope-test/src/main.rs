@@ -1,6 +1,10 @@
 use std::{thread, time};
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Print the available parallelism
+    let available_parallelism = thread::available_parallelism()?;
+    println!("Available parallelism: {:?}", available_parallelism);
+
     let mut vector = vec![1, 2, 3, 4, 5];
     println!("Main thread {:?}", vector);
 
@@ -26,4 +30,6 @@ fn main() {
     // Vector is still accessible here
     vector.push(7);
     println!("Main thread after scope {:?}", vector);
+
+    Ok(())
 }
