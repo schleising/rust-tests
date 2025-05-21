@@ -1,20 +1,40 @@
-use std::{thread, time};
+use std::{fmt::Pointer, thread, time};
+
+#[derive(Debug)]
+enum MyVec<T> {
+    Vector(Vec<T>)
+}
+
+impl<T> MyVec<T> {
+    fn push(&mut self, value: T) {
+        match self {
+            MyVec::Vector(vec) => vec.push(value),
+        }
+    }
+}
+
+impl<T> Pointer for MyVec<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:p}", self)
+    }
+}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Print the available parallelism
     let available_parallelism = thread::available_parallelism()?;
     println!("Available parallelism: {:?}", available_parallelism);
 
-    let mut vector = vec![1, 2, 3, 4, 5];
-    println!("Main thread {:?}", vector);
+    let vector = vec![1, 2, 3, 4, 5];
+    let mut my_vector = MyVec::Vector(vector);
+    println!("Main thread {:?}", my_vector);
 
     // Get the current time
     let start_time = time::Instant::now();
 
     thread::scope(|scope| {
         scope.spawn(|| {
-            vector.push(6);
-            println!("Thread {:?}", vector);
+            my_vector.push(6);
+            println!("Thread {:?}", my_vector);
             thread::sleep(time::Duration::from_secs(2));
         });
 
@@ -28,8 +48,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Elapsed time: {:.0?}", elapsed_time);
 
     // Vector is still accessible here
-    vector.push(7);
-    println!("Main thread after scope {:?}", vector);
+    my_vector.push(7);
+    println!("Main thread after scope {:p}", my_vector);
 
     Ok(())
 }
