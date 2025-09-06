@@ -49,7 +49,7 @@ impl<T> List<T> {
         IntoIter(self)
     }
 
-    pub fn iter(&self) -> Iter<T> {
+    pub fn iter<'a>(&'a self) -> Iter<'a, T> {
         Iter { next: self.head.as_deref() }
     }
 

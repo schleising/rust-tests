@@ -89,25 +89,25 @@ impl<T> List<T> {
         })
     }
     
-    pub fn peek_back(&self) -> Option<Ref<T>> {
+    pub fn peek_back<'a>(&'a self) -> Option<Ref<'a, T>> {
         self.tail.as_ref().map(|node| {
             Ref::map(node.borrow(), |node| &node.elem)
         })
     }
-    
-    pub fn peek_back_mut(&mut self) -> Option<RefMut<T>> {
+
+    pub fn peek_back_mut<'a>(&'a mut self) -> Option<RefMut<'a, T>> {
         self.tail.as_ref().map(|node| {
             RefMut::map(node.borrow_mut(), |node| &mut node.elem)
         })
     }
-    
-    pub fn peek_front_mut(&mut self) -> Option<RefMut<T>> {
+
+    pub fn peek_front_mut<'a>(&'a mut self) -> Option<RefMut<'a, T>> {
         self.head.as_ref().map(|node| {
             RefMut::map(node.borrow_mut(), |node| &mut node.elem)
         })
     }
 
-    pub fn peek_front(&self) -> Option<Ref<T>> {
+    pub fn peek_front<'a>(&'a self) -> Option<Ref<'a, T>> {
         self.head.as_ref().map(|node| {
             Ref::map(node.borrow(), |node| &node.elem)
         })
