@@ -15,12 +15,12 @@ fn main() {
                     // Check if the error is a CliError::UserQuit and break the loop, otherwise continue
                     CliError::UserQuit => {
                         // Print quit message to stdout and break the loop
-                        println!("{}", input_err);
+                        println!("{input_err}");
                         break
                     },
                     _ => {
                         // Print the error to stderr and continue the loop
-                        eprintln!("{}", input_err);
+                        eprintln!("{input_err}");
                         continue
                     },
                 }
@@ -28,7 +28,7 @@ fn main() {
         };
 
         // Print the number
-        let output_string = format!("The user entered: {}", input_number);
+        let output_string = format!("The user entered: {input_number}");
         println!("{}", output_string.blue());
     }
 }

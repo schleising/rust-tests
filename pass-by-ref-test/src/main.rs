@@ -4,7 +4,7 @@ struct IntStruct {
 
 fn int_ref_inc(x: &mut i32) {
     // Prints the value of x
-    println!("x in int_ref_inc = {}", x);
+    println!("x in int_ref_inc = {x}");
     // Increments the value of x
     *x += 1;
 }
@@ -20,9 +20,9 @@ fn modift_int_struct(x: &mut IntStruct) {
 
 fn main() {
     let mut x = 1;
-    println!("x before call = {}", x);
+    println!("x before call = {x}");
     int_ref_inc(&mut x);
-    println!("x after call = {}", x);
+    println!("x after call = {x}");
 
     let mut x = IntStruct { x: 1 };
     println!("x before call = {}", x.x);

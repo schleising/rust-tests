@@ -94,7 +94,7 @@ pub mod user_input {
             // Test all possible u8 values
             for i in u8::MIN..u8::MAX {
                 // Create a string from the number
-                let current_number: String = format!("{}\n", i);
+                let current_number: String = format!("{i}\n");
 
                 // Test the get_number_from_user function simulating the user entering a number
                 let mut input: &[u8] = current_number.as_bytes();

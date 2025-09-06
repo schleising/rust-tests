@@ -27,7 +27,7 @@ fn box_test_type() -> Box<TestType> {
     });
 
     // Print the test type
-    println!("boxed_test_type: {}", boxed_test_type);
+    println!("boxed_test_type: {boxed_test_type}");
 
     // Print the name of the test type
     println!("boxed_test_type.name: {}", boxed_test_type.name);
@@ -47,7 +47,7 @@ fn rc_test_type() -> Rc<TestType> {
     });
 
     // Print the test type
-    println!("rc_test_type: {}", rc_test_type);
+    println!("rc_test_type: {rc_test_type}");
 
     // Print the name of the test type
     println!("rc_test_type.name: {}", rc_test_type.name);
@@ -87,7 +87,7 @@ fn main() {
     };
 
     // Print the test type
-    println!("test_type: {}", test_type);
+    println!("test_type: {test_type}");
 
     // Print the type of the test type
     print_type_of(&test_type);
@@ -99,7 +99,7 @@ fn main() {
     let boxed_test_type = box_test_type();
 
     // Print the test type
-    println!("boxed_test_type: {}", boxed_test_type);
+    println!("boxed_test_type: {boxed_test_type}");
 
     // Print the type of the boxed test type
     print_type_of(&boxed_test_type);
@@ -111,7 +111,7 @@ fn main() {
     let rc_test_type = rc_test_type();
 
     // Print the test type
-    println!("rc_test_type: {}", rc_test_type);
+    println!("rc_test_type: {rc_test_type}");
 
     // Print the type of the Rc test type
     print_type_of(&rc_test_type);

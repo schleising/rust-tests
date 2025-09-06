@@ -20,7 +20,7 @@ struct MatchList {
 fn unwrap_score(score: Option<u32>) -> String {
     match score {
         // If the score is Some, format it as a string
-        Some(s) => format!("{:1}", s),
+        Some(s) => format!("{s:1}"),
         // If the score is None, set it to 0
         None => "0".to_string(),
     }
@@ -67,7 +67,7 @@ fn download_and_parse_matches(client: &reqwest::blocking::Client, print_matches:
 // Async version
 async fn download_and_parse_matches_async(_client: &reqwest::Client, print_matches: bool, i: u32) -> Result<(), Box<dyn std::error::Error>> {
 
-    println!("Iteration Start: {}", i);
+    println!("Iteration Start: {i}");
 
     // Set the URL
     let url: &str = "https://schleising.net/football/api/";
@@ -80,7 +80,7 @@ async fn download_and_parse_matches_async(_client: &reqwest::Client, print_match
     // Send the request and get the response using await to wait for the response
     // let response = request.send().await?;
 
-    println!("Response: {:?}", response);
+    println!("Response: {response:?}");
 
     // Check the response status
     if !response.status().is_success() {
@@ -109,7 +109,7 @@ async fn download_and_parse_matches_async(_client: &reqwest::Client, print_match
         }
     }
 
-    println!("Iteration End: {}", i);
+    println!("Iteration End: {i}");
 
     // Return Ok
     Ok(())

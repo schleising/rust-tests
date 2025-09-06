@@ -33,5 +33,5 @@ fn main() {
     );
 
     // Pretty print the struct
-    println!("{:#?}", container);
+    println!("{container:#?}");
 }

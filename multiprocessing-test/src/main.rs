@@ -22,12 +22,11 @@ fn main() {
     let mut thread_vec = Vec::new();
     for input in input_vec {
         let thread = std::thread::spawn(move || {
-            println!("Thread started, sleeping for {} seconds", input);
+            println!("Thread started, sleeping for {input} seconds");
             let result = sleep(input);
             // Print how long the thread took to run
             println!(
-                "Thread finished, slept for {} seconds, took {:?} to run",
-                result,
+                "Thread finished, slept for {result} seconds, took {:?} to run",
                 start.elapsed()
             );
         });
@@ -41,7 +40,7 @@ fn main() {
         // Handle thread join error
         match thread_result {
             Ok(_) => (),
-            Err(e) => println!("Error joining thread: {:?}", e),
+            Err(e) => println!("Error joining thread: {e:?}"),
         }
     }
 }

@@ -49,33 +49,33 @@ fn main() {
     // Serialise Person to JSON
     let serialised = match serde_json::to_string(&person) {
         Ok(s) => s,
-        Err(e) => panic!("Error serialising: {}", e),
+        Err(e) => panic!("Error serialising: {e}"),
     };
 
-    println!("Serialised: {}", serialised);
+    println!("Serialised: {serialised}");
 
     // Deserialise JSON to Person
     let deserialised: Person = match serde_json::from_str(&serialised) {
         Ok(p) => p,
-        Err(e) => panic!("Error deserialising: {}", e),
+        Err(e) => panic!("Error deserialising: {e}"),
     };
 
-    println!("Deserialised: {:?}", deserialised);
+    println!("Deserialised: {deserialised:?}");
 
     // Serialise Person with no age to JSON
     let serialised_no_age = match serde_json::to_string(&person_no_age) {
         Ok(s) => s,
-        Err(e) => panic!("Error serialising: {}", e),
+        Err(e) => panic!("Error serialising: {e}"),
     };
 
-    println!("Serialised No Age: {}", serialised_no_age);
+    println!("Serialised No Age: {serialised_no_age}");
 
     // Deserialise JSON to Person with no age
     let deserialised_no_age: Person = match serde_json::from_str(&serialised_no_age) {
         Ok(p) => p,
-        Err(e) => panic!("Error deserialising: {}", e),
+        Err(e) => panic!("Error deserialising: {e}"),
     };
 
-    println!("Deserialised No Age: {:?}", deserialised_no_age);
+    println!("Deserialised No Age: {deserialised_no_age:?}");
 
 }

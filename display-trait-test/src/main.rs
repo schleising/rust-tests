@@ -6,7 +6,7 @@ trait Exclaim: Display {
 
 impl<T: Display> Exclaim for T {
     fn exclaim (&self) -> String {
-        format!("{}!", self)
+        format!("{self}!")
     }
 }
 

@@ -28,7 +28,7 @@ fn main() {
     // Wait for the thread to finish
     match handle.join() {
         Ok(_) => println!("Thread joined successfully"),
-        Err(e) => println!("Thread panicked: {:?}", e),
+        Err(e) => println!("Thread panicked: {e:?}"),
     }
     println!("Main thread finished");
 }

@@ -4,7 +4,7 @@ use std::sync::Arc;
 
 async fn long_process(proc_number: u32, client: Arc<reqwest::Client>) -> Result<(), reqwest::Error> {
     // Print the number of the process that is starting
-    println!("Process: {} Started", proc_number);
+    println!("Process: {proc_number} Started");
 
     // Get data from a url
     let url: &str = "https://www.schleising.net/football/api/";
@@ -28,19 +28,19 @@ async fn long_process(proc_number: u32, client: Arc<reqwest::Client>) -> Result<
             let _body: String = response.text().await?;
 
             // Print the process number is successful
-            println!("Proc {} - Successful", proc_number);
+            println!("Proc {proc_number} - Successful");
 
             // Print the response body
             // println!("Body: {}", body);
         },
         Err(e) => {
             // Print the error
-            println!("Proc {} - Error: {}", proc_number, e);
+            println!("Proc {proc_number} - Error: {e}");
         }
     }
 
     // Print the number of the process that is finished
-    println!("Process: {} Finished", proc_number);
+    println!("Process: {proc_number} Finished");
 
     // Return Ok
     Ok(())
@@ -92,7 +92,7 @@ async fn main() {
         },
         Err(e) => {
             // Print the error
-            println!("Error: {}", e);
+            println!("Error: {e}");
         }
     }
 }

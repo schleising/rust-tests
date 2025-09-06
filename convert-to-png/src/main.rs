@@ -38,7 +38,7 @@ fn walk_folders(folder: &str) -> anyhow::Result<()> {
 
         // Continue if there is an operation not permitted error
         Err(e) if e.kind() == std::io::ErrorKind::PermissionDenied => {
-            eprintln!("Permission denied: {}", folder);
+            eprintln!("Permission denied: {folder}");
             return Ok(());
         }
 
@@ -64,8 +64,8 @@ fn walk_folders(folder: &str) -> anyhow::Result<()> {
         }
 
         match convert_image_to_png(&path) {
-            Ok(_) => println!("Converted: {:?}", path),
-            Err(e) => eprintln!("Error converting {:?}: {}", path, e),
+            Ok(_) => println!("Converted: {path:?}"),
+            Err(e) => eprintln!("Error converting {path:?}: {e}"),
         }
 
         // Wait for user input
@@ -81,6 +81,6 @@ fn main() {
     const INPUT_FOLDER: &str = "/Users/steve/Pictures/";
 
     if let Err(e) = walk_folders(INPUT_FOLDER) {
-        eprintln!("Error: {}", e);
+        eprintln!("Error: {e}");
     }
 }

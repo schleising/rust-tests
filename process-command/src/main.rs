@@ -18,8 +18,8 @@ enum FfmpegError {
 impl std::fmt::Display for FfmpegError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            FfmpegError::SpawnError(e) => write!(f, "Spawn Error: {:?}", e),
-            FfmpegError::ParseError(e) => write!(f, "Parse Error: {:?}", e),
+            FfmpegError::SpawnError(e) => write!(f, "Spawn Error: {e:?}"),
+            FfmpegError::ParseError(e) => write!(f, "Parse Error: {e:?}"),
         }
     }
 }
@@ -30,21 +30,21 @@ impl std::error::Error for FfmpegError {}
 // Convert a parse int error to an FfmpegError
 impl From<std::num::ParseIntError> for FfmpegError {
     fn from(e: std::num::ParseIntError) -> Self {
-        FfmpegError::ParseError(format!("ParseIntError: {}", e))
+        FfmpegError::ParseError(format!("ParseIntError: {e}"))
     }
 }
 
 // Convert a parse float error to an FfmpegError
 impl From<std::num::ParseFloatError> for FfmpegError {
     fn from(e: std::num::ParseFloatError) -> Self {
-        FfmpegError::ParseError(format!("ParseFloatError: {}", e))
+        FfmpegError::ParseError(format!("ParseFloatError: {e}"))
     }
 }
 
 // Convert a chrono parse error to an FfmpegError
 impl From<chrono::ParseError> for FfmpegError {
     fn from(e: chrono::ParseError) -> Self {
-        FfmpegError::ParseError(format!("ParseError: {}", e))
+        FfmpegError::ParseError(format!("ParseError: {e}"))
     }
 }
 
@@ -160,7 +160,7 @@ fn parse_string(string: &str) -> Result<(), FfmpegError> {
                 .ok_or(FfmpegError::ParseError("Could not get speed".to_string()))?;
 
             // Print the output
-            println!("{}", output);
+            println!("{output}");
         } else {
             // Return an error
             return Err(FfmpegError::ParseError("Could not parse string".to_string()));
@@ -251,7 +251,7 @@ fn main() -> std::io::Result<()> {
                             Ok(_) => {
                             },
                             Err(e) => {
-                                println!("Parse Error: {} {}", e, s);
+                                println!("Parse Error: {e} {s}");
                             }
                         }
                     }
@@ -263,12 +263,12 @@ fn main() -> std::io::Result<()> {
 
             // Wait for the process to finish
             if let Ok(status) = cmd.wait() {
-                println!("Process ended with {}", status);
+                println!("Process ended with {status}");
             }
         },
         Err(e) => {
             let error = FfmpegError::SpawnError(e);
-            println!("Error: {}", error);
+            println!("Error: {error}");
             return Err(std::io::Error::other(error));
         }
     }

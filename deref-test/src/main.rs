@@ -26,5 +26,5 @@ fn main() {
     // The following line is equivalent to:
     // let value = (*boxed_struct).get_value();
     let value = boxed_struct.get_value();
-    println!("Value: {}", value);
+    println!("Value: {value}");
 }

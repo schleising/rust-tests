@@ -40,13 +40,13 @@ fn inspect_numbers(numbers: &[i32]) -> Vec<i32> {
 
     // Inspect before and after a skip, filter, and map
     let inspect_numbers: Vec<i32> = iter
-        .inspect(|&x| println!("before skip, filter, and map: {}", x))
+        .inspect(|&x| println!("before skip, filter, and map: {x}"))
         .skip(2)
-        .inspect(|&x| println!("after skip: {}", x))
+        .inspect(|&x| println!("after skip: {x}"))
         .filter(|&x| x % 3 == 0)
-        .inspect(|&x| println!("after filter: {}", x))
+        .inspect(|&x| println!("after filter: {x}"))
         .map(|&x| x * 2)
-        .inspect(|&x| println!("after map: {}", x))
+        .inspect(|&x| println!("after map: {x}"))
         .collect();
 
     // Return the inspected numbers
@@ -70,17 +70,17 @@ fn main() {
     let inspect_numbers = inspect_numbers(&numbers);
 
     // Print the original numbers
-    println!("numbers = {:?}", numbers);
+    println!("numbers = {numbers:?}");
 
     // Print the even numbers
-    println!("even_numbers = {:?}", even_numbers);
+    println!("even_numbers = {even_numbers:?}");
 
     // Print the odd numbers
-    println!("odd_numbers = {:?}", odd_numbers);
+    println!("odd_numbers = {odd_numbers:?}");
 
     // Print the skipped numbers
-    println!("skip_numbers = {:?}", skip_numbers);
+    println!("skip_numbers = {skip_numbers:?}");
 
     // Print the inspected numbers
-    println!("inspect_numbers = {:?}", inspect_numbers);
+    println!("inspect_numbers = {inspect_numbers:?}");
 }

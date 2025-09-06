@@ -93,24 +93,24 @@ impl<StateT: State> std::fmt::Display for StateMachine<StateT> {
 fn main() {
     // Create a new state machine with the initial state State1
     let state_machine = StateMachine::new();
-    println!("StateMachine in State: {}", state_machine);
+    println!("StateMachine in State: {state_machine}");
     println!("{}", state_machine.common_method());
 
     // Transition to State2, State3, State4, and back to State1
     let state_machine = state_machine.transition_to_state2();
-    println!("StateMachine in State: {}", state_machine);
+    println!("StateMachine in State: {state_machine}");
     println!("{}", state_machine.common_method());
 
     let state_machine = state_machine.transition_to_state3();
-    println!("StateMachine in State: {}", state_machine);
+    println!("StateMachine in State: {state_machine}");
     println!("{}", state_machine.common_method());
 
     let state_machine = state_machine.transition_to_state4();
-    println!("StateMachine in State: {}", state_machine);
+    println!("StateMachine in State: {state_machine}");
     println!("{}", state_machine.common_method());
 
     let state_machine = state_machine.transition_to_state1();
-    println!("StateMachine in State: {}", state_machine);
+    println!("StateMachine in State: {state_machine}");
     println!("{}", state_machine.common_method());
 }
 
@@ -123,32 +123,32 @@ mod tests {
         // Create a new state machine with the initial state State1
         let state_machine = StateMachine::new();
         assert_eq!(
-            format!("{}", state_machine),
+            format!("{state_machine}"),
             "State: \"state_machine_test::State1\""
         );
 
         // Transition to State2, State3, State4, and back to State1
         let state_machine = state_machine.transition_to_state2();
         assert_eq!(
-            format!("{}", state_machine),
+            format!("{state_machine}"),
             "State: \"state_machine_test::State2\""
         );
 
         let state_machine = state_machine.transition_to_state3();
         assert_eq!(
-            format!("{}", state_machine),
+            format!("{state_machine}"),
             "State: \"state_machine_test::State3\""
         );
 
         let state_machine = state_machine.transition_to_state4();
         assert_eq!(
-            format!("{}", state_machine),
+            format!("{state_machine}"),
             "State: \"state_machine_test::State4\""
         );
 
         let state_machine = state_machine.transition_to_state1();
         assert_eq!(
-            format!("{}", state_machine),
+            format!("{state_machine}"),
             "State: \"state_machine_test::State1\""
         );
     }

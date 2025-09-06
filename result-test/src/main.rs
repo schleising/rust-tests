@@ -14,6 +14,6 @@ fn main() {
 
     // Print the results
     for result in results_strings {
-        println!("{}", result);
+        println!("{result}");
     }
 }

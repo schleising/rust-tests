@@ -23,13 +23,13 @@ fn main() {
 
     // Match on the Option<i32> returned by return_some_value()
     match some_value {
-        Some(x) => println!("Return Some Value Got a value: {}", x),
+        Some(x) => println!("Return Some Value Got a value: {x}"),
         None => println!("Return Some Value Got no value"),
     }
 
     // Match on the Option<i32> returned by return_no_value()
     match no_value {
-        Some(x) => println!("Return No Value Got a value: {}", x),
+        Some(x) => println!("Return No Value Got a value: {x}"),
         None => println!("Return No Value Got no value"),
     }
 
@@ -40,20 +40,20 @@ fn main() {
 
     // Match on the enum variants
     match variant1 {
-        TestEnum::Variant1(x) => println!("Variant1: {}", x),
-        TestEnum::Variant2(x) => println!("Variant2: {}", x),
+        TestEnum::Variant1(x) => println!("Variant1: {x}"),
+        TestEnum::Variant2(x) => println!("Variant2: {x}"),
         TestEnum::Variant3(x) => println!("Variant3: x: {}, y: {}", x.x, x.y),
     }
 
     match variant2 {
-        TestEnum::Variant1(x) => println!("Variant1: {}", x),
-        TestEnum::Variant2(x) => println!("Variant2: {}", x),
+        TestEnum::Variant1(x) => println!("Variant1: {x}"),
+        TestEnum::Variant2(x) => println!("Variant2: {x}"),
         TestEnum::Variant3(x) => println!("Variant3: x: {}, y: {}", x.x, x.y),
     }
 
     match variant3 {
-        TestEnum::Variant1(x) => println!("Variant1: {}", x),
-        TestEnum::Variant2(x) => println!("Variant2: {}", x),
+        TestEnum::Variant1(x) => println!("Variant1: {x}"),
+        TestEnum::Variant2(x) => println!("Variant2: {x}"),
         TestEnum::Variant3(x) => println!("Variant3: x: {}, y: {}", x.x, x.y),
     }
 }

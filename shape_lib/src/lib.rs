@@ -93,7 +93,7 @@ mod tests {
     #[test]
     fn test_rectangle_display() {
         let rectangle: Rectangle = Shape::new(2, 3);
-        assert_eq!(format!("{}", rectangle), "Rectangle { width: 2, height: 3 }");
+        assert_eq!(format!("{rectangle}"), "Rectangle { width: 2, height: 3 }");
     }
 
     // Test the Triangle area
@@ -107,6 +107,6 @@ mod tests {
     #[test]
     fn test_triangle_display() {
         let triangle: Triangle = Shape::new(2, 3);
-        assert_eq!(format!("{}", triangle), "Triangle { width: 2, height: 3 }");
+        assert_eq!(format!("{triangle}"), "Triangle { width: 2, height: 3 }");
     }
 }
